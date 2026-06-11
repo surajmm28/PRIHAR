@@ -1,19 +1,19 @@
 /* Page-specific interactions */
 document.documentElement.classList.add('js-enhanced');
 
-/* ── Police Gallery — hover + wheel horizontal scroll ── */
+/* ── Police Gallery — auto-scroll on mobile, hover on desktop ── */
 (function () {
   const gallery = document.getElementById('police-gallery');
   if (!gallery) return;
 
   const track = gallery.querySelector('.police-gallery__track');
-  let scrollX   = 0;
-  let hovering  = false;
-  const SPEED   = 0.6; // px per frame while hovering
+  let scrollX = 0;
+  let playing = false;
+  const SPEED = 0.75;
 
-  function halfWidth() {
-    return track.scrollWidth / 2;
-  }
+  function isMobile() { return window.innerWidth <= 1024; }
+
+  function halfWidth() { return track.scrollWidth / 2; }
 
   function wrap(x) {
     const hw = halfWidth();
@@ -24,18 +24,31 @@ document.documentElement.classList.add('js-enhanced');
   }
 
   function tick() {
-    if (hovering) scrollX = wrap(scrollX + SPEED);
+    if (playing) scrollX = wrap(scrollX + SPEED);
     track.style.transform = `translateX(${-scrollX}px)`;
     requestAnimationFrame(tick);
   }
 
-  gallery.addEventListener('mouseenter', () => { hovering = true;  });
-  gallery.addEventListener('mouseleave', () => { hovering = false; });
+  // Desktop: hover to start/stop
+  gallery.addEventListener('mouseenter', () => { if (!isMobile()) playing = true;  });
+  gallery.addEventListener('mouseleave', () => { if (!isMobile()) playing = false; });
 
+  // Mobile: pause while finger is down, resume on lift
+  gallery.addEventListener('touchstart',  () => { playing = false; }, { passive: true });
+  gallery.addEventListener('touchend',    () => { if (isMobile()) playing = true; }, { passive: true });
+  gallery.addEventListener('touchcancel', () => { if (isMobile()) playing = true; }, { passive: true });
+
+  // Wheel scroll (desktop)
   gallery.addEventListener('wheel', (e) => {
     e.preventDefault();
     scrollX = wrap(scrollX + e.deltaY * 0.6 + e.deltaX * 0.6);
   }, { passive: false });
+
+  // Start immediately on mobile; re-evaluate on resize
+  playing = isMobile();
+  window.addEventListener('resize', () => {
+    playing = isMobile();
+  });
 
   requestAnimationFrame(tick);
 })();
