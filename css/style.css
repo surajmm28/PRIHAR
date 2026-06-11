@@ -974,24 +974,108 @@ p { line-height: 1.75; }
 #btt svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; }
 
 /* ══════════════════════════════
+   RESPONSIVE UTILITY GRIDS
+══════════════════════════════ */
+.grid-2col  { display: grid; grid-template-columns: 1fr 1fr; }
+.grid-3col  { display: grid; grid-template-columns: repeat(3, 1fr); }
+.grid-4col  { display: grid; grid-template-columns: repeat(4, 1fr); }
+.page-2col  { display: grid; grid-template-columns: 1fr 1fr; }
+.form-2col  { display: grid; grid-template-columns: 1fr 1fr; }
+.commissioner-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.commissioner-card { display: flex; gap: 1.5rem; align-items: flex-start; }
+
+/* ══════════════════════════════
    RESPONSIVE
 ══════════════════════════════ */
 @media (max-width: 1024px) {
+  .navbar__menu, .navbar__right { display: none; }
+  .hamburger { display: flex; }
+  .mobile-menu { display: block; }
   .footer__grid { grid-template-columns: 1fr 1fr; }
-  .hero__stats  { grid-template-columns: repeat(2, 1fr); }
-  .stats-band__grid { grid-template-columns: repeat(2, 1fr); }
+  .hero__stats { grid-template-columns: 1fr 1fr; }
+  .stats-band__grid { grid-template-columns: 1fr 1fr; }
+  .stat-item:nth-child(2n) { border-right: none; }
+  .stat-item:nth-child(-n+2) { border-bottom: 1px solid rgba(255,255,255,.08); }
 }
+
 @media (max-width: 768px) {
-  .section { padding: 3.5rem 0; }
-  .container { padding: 0 1.25rem; }
-  .footer__grid { grid-template-columns: 1fr; gap: 2rem; }
-  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-  .gallery-grid--4 { grid-template-columns: repeat(2, 1fr); }
+  .section { padding: 3rem 0; }
+  .container { padding: 0 1.1rem; }
+
+  /* Topbar */
+  .topbar__right { display: none; }
+
+  /* Navbar */
+  .navbar__inner { height: 70px; }
+  .navbar__logo { height: 56px; }
+  .mobile-menu a { padding: .85rem 1.5rem; font-size: .88rem; }
+  .mobile-menu a.indent { padding-left: 2.5rem; }
+
+  /* Hero */
+  .hero__content { padding: 3rem 0 2.5rem; }
+  .hero__stats { grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .hero__scroll { display: none; }
+
+  /* Page hero */
+  .page-hero { height: auto; min-height: 160px; padding: 2.5rem 0; }
+
+  /* Gold strip */
+  .gold-strip__inner { flex-direction: column; align-items: flex-start; gap: .65rem; }
+
+  /* Stats band */
+  .stats-band__grid { grid-template-columns: 1fr 1fr; }
+
+  /* Utility grids */
+  .grid-2col  { grid-template-columns: 1fr; }
+  .grid-3col  { grid-template-columns: 1fr 1fr; }
+  .grid-4col  { grid-template-columns: 1fr 1fr; }
+  .page-2col  { grid-template-columns: 1fr; row-gap: 2.5rem !important; }
+  .form-2col  { grid-template-columns: 1fr; }
+  .commissioner-grid { grid-template-columns: 1fr; row-gap: 2rem !important; }
+  .commissioner-grid > img { margin: 0 auto; display: block; }
+  .commissioner-card { flex-direction: column; gap: 1.25rem; }
+
+  /* Gallery */
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-grid--4 { grid-template-columns: 1fr 1fr; }
+
+  /* Person cards */
   .person-card--featured { flex-direction: column; }
   .person-card--featured .person-card__img { width: 100%; max-width: 180px; height: auto; aspect-ratio: 3/4; }
+
+  /* Police gallery */
+  .police-gallery__img { width: 130px; height: 165px; }
+
+  /* Footer */
+  .footer__grid { grid-template-columns: 1fr; gap: 2rem; }
+  .footer__top { padding: 3rem 0 2rem; }
+  .footer__bottom { flex-direction: column; text-align: center; gap: .4rem; }
 }
+
 @media (max-width: 480px) {
-  .hero__stats { grid-template-columns: repeat(2, 1fr); gap: .75rem; }
+  .section { padding: 2.5rem 0; }
+  .container { padding: 0 1rem; }
+
+  /* Hero */
+  .hero__content { padding: 2rem 0 1.5rem; }
+  .hero__stat-num { font-size: 1.6rem; }
+
+  /* Grids */
+  .grid-3col { grid-template-columns: 1fr; }
+  .grid-4col { grid-template-columns: 1fr; }
   .stats-band__grid { grid-template-columns: 1fr 1fr; }
+  .stat-item__num { font-size: 2rem; }
+
+  /* Page hero */
+  .page-hero__title { font-size: 1.5rem; }
+  .page-hero { min-height: 140px; padding: 2rem 0; }
+
+  /* Gallery */
   .gallery-grid { grid-template-columns: 1fr 1fr; }
 }
