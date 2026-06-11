@@ -1,0 +1,168 @@
+/* ═══════════════════════════════════════════
+   PARIHAR — BCP Website Stylesheet
+   Fonts: Cormorant Garamond (serif) + Inter (sans)
+   Colors:
+     --ink:   #1C2B3A  (primary dark)
+     --steel: #3B6091  (accent blue)
+     --stone: warm grays
+═══════════════════════════════════════════ */
+
+/* ── Reset & Base ─────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Navbar ───────────────────────────── */
+#navbar {
+  transition: background 0.35s ease, box-shadow 0.35s ease;
+}
+
+#navbar.scrolled {
+  background: rgba(28, 43, 58, 0.97);
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Mobile Menu ──────────────────────── */
+#mobile-menu {
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  background: #1C2B3A;
+}
+
+#mobile-menu.open {
+  max-height: 420px;
+  opacity: 1;
+}
+
+/* ── Scroll Reveal ────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Section Label (e.g. "ABOUT US") ─── */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #3B6091;
+  margin-bottom: 16px;
+}
+
+.section-label::before,
+.section-label::after {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: #3B6091;
+  opacity: 0.6;
+}
+
+/* ── Heading underline accent ─────────── */
+.heading-line::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: #3B6091;
+  margin-top: 12px;
+  opacity: 0.7;
+}
+
+.heading-line-center::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: #3B6091;
+  margin: 12px auto 0;
+  opacity: 0.7;
+}
+
+/* ── Card hover ───────────────────────── */
+.card-hover {
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.card-hover:hover {
+  box-shadow: 0 8px 32px rgba(28, 43, 58, 0.10);
+  transform: translateY(-3px);
+}
+
+/* ── Form focus states ────────────────── */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 96, 145, 0.15);
+  border-color: #3B6091;
+}
+
+/* ── Back to Top button ───────────────── */
+#btt {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+#btt.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Hero: subtle noise overlay ──────── */
+.hero-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
+}
+
+/* ── Hero: faint grid ─────────────────── */
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* ── Stats grid separator lines ──────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background-color: #E8E5E1;
+}
+
+@media (min-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stats-cell {
+  background: #ffffff;
+  padding: 40px 32px;
+  text-align: center;
+}
+
+/* ── Process step connector line ──────── */
+.process-connector {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .process-connector {
+    display: block;
+  }
+}
