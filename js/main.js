@@ -1,4 +1,5 @@
 /* Page-specific interactions */
+document.documentElement.classList.add('js-enhanced');
 
 /* ── Police Gallery — hover + wheel horizontal scroll ── */
 (function () {
