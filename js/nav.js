@@ -1,13 +1,10 @@
 /* Shared navigation & footer injector */
 (function () {
-  /* Works on file:// (double-click) AND on any web server */
-  const isFile = location.protocol === 'file:';
+  /* Relative paths work on file://, localhost, and any GitHub Pages deployment */
   const inSubfolder = ['projects','portfolio'].includes(
     location.pathname.split('/').slice(-2,-1)[0]
   );
-  const BASE = isFile
-    ? (inSubfolder ? '..' : '.')
-    : '/parihar-website';
+  const BASE = inSubfolder ? '..' : '.';
 
   const LOGO = 'https://bcpparihar.org/wp-content/uploads/2022/09/2018-05-30-1.png';
 
@@ -103,19 +100,29 @@
   </div>
 
   <div class="mobile-menu" id="mobile-menu">
-    <a href="${BASE}/index.html">Home</a>
-    <a href="${BASE}/about.html">About Us</a>
-    <a href="${BASE}/about.html#overview" class="indent">— Overview</a>
-    <a href="${BASE}/about.html#services" class="indent">— Services</a>
-    <a href="${BASE}/about.html#governing-body" class="indent">— Governing Body</a>
-    <a href="${BASE}/projects/fcc.html" class="indent">— FCC</a>
-    <a href="${BASE}/projects/vsv.html" class="indent">— VSV</a>
-    <a href="${BASE}/projects/msv.html" class="indent">— MSV</a>
-    <a href="${BASE}/portfolio/skill-development.html" class="indent">— Skill Development</a>
-    <a href="${BASE}/portfolio/activities.html" class="indent">— Activities</a>
-    <a href="${BASE}/portfolio/feedback.html" class="indent">— Feedback</a>
-    <a href="${BASE}/portfolio/reports.html" class="indent">— Reports</a>
-    <a href="${BASE}/contact.html">Contact Us</a>
+    <a href="${BASE}/index.html"${active('home')}>Home</a>
+
+    <a href="${BASE}/about.html"${active('about')}>About Us</a>
+    <a href="${BASE}/about.html#overview" class="indent">Overview</a>
+    <a href="${BASE}/about.html#services" class="indent">Services</a>
+    <a href="${BASE}/about.html#governing-body" class="indent">Governing Body</a>
+
+    <div class="mobile-menu__section">Projects</div>
+    <a href="${BASE}/projects/fcc.html" class="indent${page==='fcc'?' active':''}">Family Counselling Centre</a>
+    <a href="${BASE}/projects/vsv.html" class="indent${page==='vsv'?' active':''}">Vanitha Sahayavani</a>
+    <a href="${BASE}/projects/msv.html" class="indent${page==='msv'?' active':''}">Makkala Sahayavani</a>
+
+    <div class="mobile-menu__section">Portfolio</div>
+    <a href="${BASE}/portfolio/skill-development.html" class="indent${page==='skill-development'?' active':''}">Skill Development</a>
+    <a href="${BASE}/portfolio/activities.html" class="indent${page==='activities'?' active':''}">Activities</a>
+    <a href="${BASE}/portfolio/feedback.html" class="indent${page==='feedback'?' active':''}">Feedback</a>
+    <a href="${BASE}/portfolio/reports.html" class="indent${page==='reports'?' active':''}">Reports</a>
+
+    <a href="${BASE}/contact.html"${active('contact')}>Contact Us</a>
+    <a href="tel:08022943225" class="mobile-menu__cta">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+      Call Now: 080-22943225
+    </a>
   </div>
 </nav>`;
 
@@ -206,10 +213,14 @@
 
   hamburger.addEventListener('click', () => {
     mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('active');
   });
 
   mobileMenu.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+    a.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('active');
+    });
   });
 
   /* Defer footer + scroll-dependent code until full DOM is ready */
