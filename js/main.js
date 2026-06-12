@@ -29,45 +29,72 @@ document.documentElement.classList.add('js-enhanced');
     requestAnimationFrame(tick);
   }
 
-  // Desktop: hover to start/stop
   gallery.addEventListener('mouseenter', () => { if (!isMobile()) playing = true;  });
   gallery.addEventListener('mouseleave', () => { if (!isMobile()) playing = false; });
 
-  // Mobile: pause while finger is down, resume on lift
   gallery.addEventListener('touchstart',  () => { playing = false; }, { passive: true });
   gallery.addEventListener('touchend',    () => { if (isMobile()) playing = true; }, { passive: true });
   gallery.addEventListener('touchcancel', () => { if (isMobile()) playing = true; }, { passive: true });
 
-  // Wheel scroll (desktop)
   gallery.addEventListener('wheel', (e) => {
     e.preventDefault();
     scrollX = wrap(scrollX + e.deltaY * 0.6 + e.deltaX * 0.6);
   }, { passive: false });
 
-  // Start immediately on mobile; re-evaluate on resize
   playing = isMobile();
-  window.addEventListener('resize', () => {
-    playing = isMobile();
-  });
+  window.addEventListener('resize', () => { playing = isMobile(); });
 
   requestAnimationFrame(tick);
 })();
 
-/* Contact form */
-function handleSubmit(e) {
+/* ── Contact Form — submits to FormSubmit.co AJAX endpoint ── */
+async function handleSubmit(e) {
   e.preventDefault();
-  const btn = document.getElementById('submit-btn');
+  const btn  = document.getElementById('submit-btn');
+  const form = e.target;
+
   btn.disabled = true;
   btn.textContent = 'Sending…';
-  setTimeout(() => {
-    btn.style.display = 'none';
-    const ok = document.getElementById('form-success');
-    if (ok) ok.style.display = 'block';
-    e.target.reset();
-  }, 1200);
+
+  const data = new FormData(form);
+  data.append('_subject', 'PARIHAR Website Enquiry');
+  data.append('_captcha', 'false');
+  data.append('_template', 'table');
+
+  try {
+    const res = await fetch('https://formsubmit.co/ajax/pariharfcc.vsv@gmail.com', {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      body: data,
+    });
+
+    if (res.ok) {
+      btn.style.display = 'none';
+      const ok = document.getElementById('form-success');
+      if (ok) ok.style.display = 'block';
+      form.reset();
+    } else {
+      throw new Error('Server error');
+    }
+  } catch {
+    btn.disabled = false;
+    btn.textContent = 'Send Message';
+    /* Fallback: open email client */
+    const name    = form.querySelector('[name="fname"]')?.value || '';
+    const message = form.querySelector('[name="message"]')?.value || '';
+    const subject = encodeURIComponent('PARIHAR Enquiry');
+    const body    = encodeURIComponent(`Name: ${name}\n\n${message}`);
+    const mailLink = document.createElement('a');
+    mailLink.href = `mailto:pariharfcc.vsv@gmail.com?subject=${subject}&body=${body}`;
+    mailLink.style.display = 'none';
+    document.body.appendChild(mailLink);
+    mailLink.click();
+    mailLink.remove();
+    alert('Your email client has opened with your message pre-filled. Alternatively, call us directly at 080-22943225.');
+  }
 }
 
-/* Lightbox for gallery images */
+/* ── Lightbox for gallery images ── */
 document.addEventListener('DOMContentLoaded', () => {
   const imgs = document.querySelectorAll('.gallery-grid img, .activity-card__img');
   if (!imgs.length) return;
@@ -85,6 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  lb.addEventListener('click', () => lb.style.display = 'none');
+  lb.addEventListener('click', () => { lb.style.display = 'none'; });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.style.display = 'none'; });
 });

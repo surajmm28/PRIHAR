@@ -1,6 +1,5 @@
 /* Shared navigation & footer injector */
 (function () {
-  /* Relative paths work on file://, localhost, and any GitHub Pages deployment */
   const inSubfolder = ['projects','portfolio'].includes(
     location.pathname.split('/').slice(-2,-1)[0]
   );
@@ -13,6 +12,16 @@
   function active(p) {
     return page === p ? ' class="active"' : '';
   }
+
+  /* Parent-level active state for dropdown buttons */
+  const projectPages   = ['fcc', 'vsv', 'msv'];
+  const portfolioPages = ['skill', 'activities', 'feedback', 'reports'];
+  const aboutActive     = page === 'about'                   ? ' class="active"' : '';
+  const projectsActive  = projectPages.includes(page)        ? ' class="active"' : '';
+  const portfolioActive = portfolioPages.includes(page)      ? ' class="active"' : '';
+
+  /* ── Skip to Main Content ── */
+  const skipLink = `<a href="#main-content" class="skip-link">Skip to main content</a>`;
 
   /* ── Top Bar ── */
   const topbar = `
@@ -58,7 +67,7 @@
       <ul class="navbar__menu">
         <li><a href="${BASE}/index.html"${active('home')}>Home</a></li>
         <li>
-          <button>About Us <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
+          <button${aboutActive} aria-haspopup="true" aria-expanded="false">About Us <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="dropdown">
             <a href="${BASE}/about.html#overview">Overview</a>
             <a href="${BASE}/about.html#services">Services</a>
@@ -66,7 +75,7 @@
           </div>
         </li>
         <li>
-          <button>Projects <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
+          <button${projectsActive} aria-haspopup="true" aria-expanded="false">Projects <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="dropdown">
             <a href="${BASE}/projects/fcc.html">Family Counselling Centre – FCC</a>
             <a href="${BASE}/projects/vsv.html">Vanitha Sahayavani – VSV</a>
@@ -74,7 +83,7 @@
           </div>
         </li>
         <li>
-          <button>Portfolio <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
+          <button${portfolioActive} aria-haspopup="true" aria-expanded="false">Portfolio <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="dropdown">
             <a href="${BASE}/portfolio/skill-development.html">Skill Development Training Centre</a>
             <a href="${BASE}/portfolio/activities.html">Activities of PARIHAR</a>
@@ -93,7 +102,7 @@
         <a href="${BASE}/contact.html" class="btn-gold">Get Help</a>
       </div>
 
-      <button class="hamburger" id="hamburger" aria-label="Menu">
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -113,7 +122,7 @@
     <a href="${BASE}/projects/msv.html" class="indent${page==='msv'?' active':''}">Makkala Sahayavani</a>
 
     <div class="mobile-menu__section">Portfolio</div>
-    <a href="${BASE}/portfolio/skill-development.html" class="indent${page==='skill-development'?' active':''}">Skill Development</a>
+    <a href="${BASE}/portfolio/skill-development.html" class="indent${page==='skill'?' active':''}">Skill Development</a>
     <a href="${BASE}/portfolio/activities.html" class="indent${page==='activities'?' active':''}">Activities</a>
     <a href="${BASE}/portfolio/feedback.html" class="indent${page==='feedback'?' active':''}">Feedback</a>
     <a href="${BASE}/portfolio/reports.html" class="indent${page==='reports'?' active':''}">Reports</a>
@@ -194,7 +203,7 @@
   </div>
   <div class="container">
     <div class="footer__bottom">
-      <span>© 2024 PARIHAR – Bengaluru City Police. All rights reserved.</span>
+      <span>© ${new Date().getFullYear()} PARIHAR – Bengaluru City Police. All rights reserved.</span>
       <span>Registered under Karnataka Societies Registration Act, 1960</span>
     </div>
   </div>
@@ -203,27 +212,54 @@
   <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
 </button>`;
 
-  /* Inject topbar + navbar immediately (prevents layout flash) */
-  document.body.insertAdjacentHTML('afterbegin', topbar + navbar);
+  /* Inject skip link + topbar + navbar immediately (prevents layout flash) */
+  document.body.insertAdjacentHTML('afterbegin', skipLink + topbar + navbar);
 
-  /* Navbar interactivity — elements exist now */
-  const navEl     = document.getElementById('navbar');
-  const hamburger = document.getElementById('hamburger');
+  /* ── Navbar interactivity ── */
+  const navEl      = document.getElementById('navbar');
+  const hamburger  = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobile-menu');
 
   hamburger.addEventListener('click', () => {
-    mobileMenu.classList.toggle('open');
+    const isOpen = mobileMenu.classList.toggle('open');
     hamburger.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+    hamburger.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
   });
 
   mobileMenu.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => {
       mobileMenu.classList.remove('open');
       hamburger.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.setAttribute('aria-label', 'Open menu');
     });
   });
 
-  /* Defer footer + scroll-dependent code until full DOM is ready */
+  /* Touch-friendly desktop dropdowns: first tap opens, subsequent click navigates */
+  navEl.querySelectorAll('.navbar__menu > li > button[aria-haspopup]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      /* Close any other open dropdown */
+      navEl.querySelectorAll('.navbar__menu > li > button[aria-expanded="true"]').forEach(b => {
+        if (b !== btn) b.setAttribute('aria-expanded', 'false');
+      });
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      if (!isOpen) {
+        /* Close when clicking outside */
+        setTimeout(() => {
+          document.addEventListener('click', function outsideClose(ev) {
+            if (!btn.closest('li').contains(ev.target)) {
+              btn.setAttribute('aria-expanded', 'false');
+              document.removeEventListener('click', outsideClose);
+            }
+          });
+        }, 0);
+      }
+    });
+  });
+
+  /* ── Defer footer + scroll-dependent code until full DOM is ready ── */
   document.addEventListener('DOMContentLoaded', () => {
     document.body.insertAdjacentHTML('beforeend', footer);
 
