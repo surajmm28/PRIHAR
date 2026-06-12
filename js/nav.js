@@ -1,9 +1,13 @@
 /* Shared navigation & footer injector */
 (function () {
+  /* Works on file:// (double-click) AND on any web server */
+  const isFile = location.protocol === 'file:';
   const inSubfolder = ['projects','portfolio'].includes(
     location.pathname.split('/').slice(-2,-1)[0]
   );
-  const BASE = inSubfolder ? '..' : '.';
+  const BASE = isFile
+    ? (inSubfolder ? '..' : '.')
+    : '/parihar-website';
 
   const LOGO = 'https://bcpparihar.org/wp-content/uploads/2022/09/2018-05-30-1.png';
 
@@ -12,16 +16,6 @@
   function active(p) {
     return page === p ? ' class="active"' : '';
   }
-
-  /* Parent-level active state for dropdown buttons */
-  const projectPages   = ['fcc', 'vsv', 'msv'];
-  const portfolioPages = ['skill', 'activities', 'feedback', 'reports'];
-  const aboutActive     = page === 'about'                   ? ' class="active"' : '';
-  const projectsActive  = projectPages.includes(page)        ? ' class="active"' : '';
-  const portfolioActive = portfolioPages.includes(page)      ? ' class="active"' : '';
-
-  /* ── Skip to Main Content ── */
-  const skipLink = `<a href="#main-content" class="skip-link">Skip to main content</a>`;
 
   /* ── Top Bar ── */
   const topbar = `
@@ -67,7 +61,7 @@
       <ul class="navbar__menu">
         <li><a href="${BASE}/index.html"${active('home')}>Home</a></li>
         <li>
-          <button${aboutActive} aria-haspopup="true" aria-expanded="false">About Us <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
+          <button>About Us <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="dropdown">
             <a href="${BASE}/about.html#overview">Overview</a>
             <a href="${BASE}/about.html#services">Services</a>
@@ -75,7 +69,7 @@
           </div>
         </li>
         <li>
-          <button${projectsActive} aria-haspopup="true" aria-expanded="false">Projects <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
+          <button>Projects <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="dropdown">
             <a href="${BASE}/projects/fcc.html">Family Counselling Centre – FCC</a>
             <a href="${BASE}/projects/vsv.html">Vanitha Sahayavani – VSV</a>
@@ -83,7 +77,7 @@
           </div>
         </li>
         <li>
-          <button${portfolioActive} aria-haspopup="true" aria-expanded="false">Portfolio <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
+          <button>Portfolio <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="dropdown">
             <a href="${BASE}/portfolio/skill-development.html">Skill Development Training Centre</a>
             <a href="${BASE}/portfolio/activities.html">Activities of PARIHAR</a>
@@ -102,36 +96,26 @@
         <a href="${BASE}/contact.html" class="btn-gold">Get Help</a>
       </div>
 
-      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <button class="hamburger" id="hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
 
   <div class="mobile-menu" id="mobile-menu">
-    <a href="${BASE}/index.html"${active('home')}>Home</a>
-
-    <a href="${BASE}/about.html"${active('about')}>About Us</a>
-    <a href="${BASE}/about.html#overview" class="indent">Overview</a>
-    <a href="${BASE}/about.html#services" class="indent">Services</a>
-    <a href="${BASE}/about.html#governing-body" class="indent">Governing Body</a>
-
-    <div class="mobile-menu__section">Projects</div>
-    <a href="${BASE}/projects/fcc.html" class="indent${page==='fcc'?' active':''}">Family Counselling Centre</a>
-    <a href="${BASE}/projects/vsv.html" class="indent${page==='vsv'?' active':''}">Vanitha Sahayavani</a>
-    <a href="${BASE}/projects/msv.html" class="indent${page==='msv'?' active':''}">Makkala Sahayavani</a>
-
-    <div class="mobile-menu__section">Portfolio</div>
-    <a href="${BASE}/portfolio/skill-development.html" class="indent${page==='skill'?' active':''}">Skill Development</a>
-    <a href="${BASE}/portfolio/activities.html" class="indent${page==='activities'?' active':''}">Activities</a>
-    <a href="${BASE}/portfolio/feedback.html" class="indent${page==='feedback'?' active':''}">Feedback</a>
-    <a href="${BASE}/portfolio/reports.html" class="indent${page==='reports'?' active':''}">Reports</a>
-
-    <a href="${BASE}/contact.html"${active('contact')}>Contact Us</a>
-    <a href="tel:08022943225" class="mobile-menu__cta">
-      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-      Call Now: 080-22943225
-    </a>
+    <a href="${BASE}/index.html">Home</a>
+    <a href="${BASE}/about.html">About Us</a>
+    <a href="${BASE}/about.html#overview" class="indent">— Overview</a>
+    <a href="${BASE}/about.html#services" class="indent">— Services</a>
+    <a href="${BASE}/about.html#governing-body" class="indent">— Governing Body</a>
+    <a href="${BASE}/projects/fcc.html" class="indent">— FCC</a>
+    <a href="${BASE}/projects/vsv.html" class="indent">— VSV</a>
+    <a href="${BASE}/projects/msv.html" class="indent">— MSV</a>
+    <a href="${BASE}/portfolio/skill-development.html" class="indent">— Skill Development</a>
+    <a href="${BASE}/portfolio/activities.html" class="indent">— Activities</a>
+    <a href="${BASE}/portfolio/feedback.html" class="indent">— Feedback</a>
+    <a href="${BASE}/portfolio/reports.html" class="indent">— Reports</a>
+    <a href="${BASE}/contact.html">Contact Us</a>
   </div>
 </nav>`;
 
@@ -203,7 +187,7 @@
   </div>
   <div class="container">
     <div class="footer__bottom">
-      <span>© ${new Date().getFullYear()} PARIHAR – Bengaluru City Police. All rights reserved.</span>
+      <span>© 2024 PARIHAR – Bengaluru City Police. All rights reserved.</span>
       <span>Registered under Karnataka Societies Registration Act, 1960</span>
     </div>
   </div>
@@ -212,54 +196,23 @@
   <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
 </button>`;
 
-  /* Inject skip link + topbar + navbar immediately (prevents layout flash) */
-  document.body.insertAdjacentHTML('afterbegin', skipLink + topbar + navbar);
+  /* Inject topbar + navbar immediately (prevents layout flash) */
+  document.body.insertAdjacentHTML('afterbegin', topbar + navbar);
 
-  /* ── Navbar interactivity ── */
-  const navEl      = document.getElementById('navbar');
-  const hamburger  = document.getElementById('hamburger');
+  /* Navbar interactivity — elements exist now */
+  const navEl     = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobile-menu');
 
   hamburger.addEventListener('click', () => {
-    const isOpen = mobileMenu.classList.toggle('open');
-    hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded', String(isOpen));
-    hamburger.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    mobileMenu.classList.toggle('open');
   });
 
   mobileMenu.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      mobileMenu.classList.remove('open');
-      hamburger.classList.remove('active');
-      hamburger.setAttribute('aria-expanded', 'false');
-      hamburger.setAttribute('aria-label', 'Open menu');
-    });
+    a.addEventListener('click', () => mobileMenu.classList.remove('open'));
   });
 
-  /* Touch-friendly desktop dropdowns: first tap opens, subsequent click navigates */
-  navEl.querySelectorAll('.navbar__menu > li > button[aria-haspopup]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const isOpen = btn.getAttribute('aria-expanded') === 'true';
-      /* Close any other open dropdown */
-      navEl.querySelectorAll('.navbar__menu > li > button[aria-expanded="true"]').forEach(b => {
-        if (b !== btn) b.setAttribute('aria-expanded', 'false');
-      });
-      btn.setAttribute('aria-expanded', String(!isOpen));
-      if (!isOpen) {
-        /* Close when clicking outside */
-        setTimeout(() => {
-          document.addEventListener('click', function outsideClose(ev) {
-            if (!btn.closest('li').contains(ev.target)) {
-              btn.setAttribute('aria-expanded', 'false');
-              document.removeEventListener('click', outsideClose);
-            }
-          });
-        }, 0);
-      }
-    });
-  });
-
-  /* ── Defer footer + scroll-dependent code until full DOM is ready ── */
+  /* Defer footer + scroll-dependent code until full DOM is ready */
   document.addEventListener('DOMContentLoaded', () => {
     document.body.insertAdjacentHTML('beforeend', footer);
 
