@@ -1,13 +1,17 @@
 /* Shared navigation & footer injector */
 (function () {
-  /* Works on file:// (double-click) AND on any web server */
-  const isFile = location.protocol === 'file:';
+  /* Works on file:// (double-click), localhost/npx-serve, AND Vercel/any host */
+  const isFile      = location.protocol === 'file:';
   const inSubfolder = ['projects','portfolio'].includes(
     location.pathname.split('/').slice(-2,-1)[0]
   );
+  /* On localhost the files live under /parihar-website/ so we need the prefix.
+     On Vercel the files are at the repo root, so BASE must be empty string
+     so links become /about.html, /projects/fcc.html etc. */
+  const needsPrefix = location.pathname.startsWith('/parihar-website');
   const BASE = isFile
     ? (inSubfolder ? '..' : '.')
-    : '/parihar-website';
+    : (needsPrefix ? '/parihar-website' : '');
 
   const LOGO = 'https://bcpparihar.org/wp-content/uploads/2022/09/2018-05-30-1.png';
 
