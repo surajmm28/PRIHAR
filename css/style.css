@@ -11,6 +11,7 @@
   --red2:   #D42828;   /* hover red */
   --gold:   #C4880A;   /* police badge brass/gold */
   --gold2:  #D9A020;   /* lighter gold for highlights */
+  --maroon: #8B1A1A;   /* deep maroon accent */
   --text:   #0F1B2D;
   --muted:  #4E5A75;
   --serif:  'Georgia', 'Times New Roman', serif;
@@ -539,7 +540,7 @@ p { line-height: 1.85; }
   display: flex; align-items: center; gap: .6rem;
   margin-bottom: .85rem;
 }
-.section-eyebrow__line { display: none; }
+.section-eyebrow__line { height: 1px; width: 36px; background: var(--maroon); opacity: .4; flex-shrink: 0; }
 .section-eyebrow__text {
   font-size: .87rem; font-weight: 700; letter-spacing: .14em;
   text-transform: uppercase; color: var(--navy);
@@ -744,7 +745,7 @@ p { line-height: 1.85; }
 ══════════════════════════════ */
 .timeline-year {
   font-size: 1.6rem; font-weight: 800;
-  color: var(--navy);
+  color: var(--maroon);
   display: flex; align-items: center; gap: 1.25rem;
   margin-bottom: 1.5rem;
   letter-spacing: -0.02em;
@@ -789,7 +790,7 @@ p { line-height: 1.85; }
 }
 .quote-card__mark {
   font-size: 3rem; line-height: .8;
-  color: var(--navy); opacity: .25;
+  color: var(--maroon); opacity: .75;
   margin-bottom: .5rem;
   font-weight: 800;
 }
@@ -813,7 +814,7 @@ p { line-height: 1.85; }
 }
 .report-stat__num {
   font-size: 2.2rem; font-weight: 800;
-  color: var(--navy); line-height: 1; margin-bottom: .4rem;
+  color: var(--maroon); line-height: 1; margin-bottom: .4rem;
   letter-spacing: -0.02em;
 }
 .report-stat__label {
@@ -838,6 +839,8 @@ p { line-height: 1.85; }
   color: var(--navy); margin-bottom: .5rem;
 }
 .case-study__text { font-size: 1rem; color: var(--muted); line-height: 1.75; }
+.case-study:nth-child(even) { border-left-color: var(--maroon); }
+.case-study:nth-child(even) .case-study__num { color: var(--maroon); }
 
 /* ══════════════════════════════
    CONTACT
