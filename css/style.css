@@ -981,17 +981,109 @@ p { line-height: 1.75; }
   .hero__stats  { grid-template-columns: repeat(2, 1fr); }
   .stats-band__grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── Tablet ── */
 @media (max-width: 768px) {
-  .section { padding: 3.5rem 0; }
+  html { font-size: 16px; }
+  .section { padding: 2.5rem 0; }
   .container { padding: 0 1.25rem; }
+
+  /* Stack ALL inline 2-col grids */
+  [style*="grid-template-columns:1fr 1fr"],
+  [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  /* Stack ALL inline 3-col grids */
+  [style*="grid-template-columns:repeat(3"],
+  [style*="grid-template-columns: repeat(3"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* 4-col → 2-col */
+  [style*="grid-template-columns:repeat(4"],
+  [style*="grid-template-columns: repeat(4"] {
+    grid-template-columns: repeat(2,1fr) !important;
+  }
+  /* Commissioner auto+1fr → single col, centred */
+  .commissioner-grid,
+  [style*="grid-template-columns:auto 1fr"],
+  [style*="grid-template-columns: auto 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    text-align: center;
+  }
+  .commissioner-grid img,
+  [style*="grid-template-columns:auto 1fr"] img,
+  [style*="grid-template-columns: auto 1fr"] img { margin: 0 auto !important; }
+
+  /* Hero */
+  .hero { min-height: auto; padding: 7rem 0 3.5rem; }
+  .hero__title { font-size: clamp(2rem, 8vw, 2.8rem) !important; }
+  .hero__actions { flex-direction: column; align-items: flex-start; gap: .75rem; }
+  .hero__stats { grid-template-columns: repeat(2, 1fr); gap: .75rem; }
+  .hero__stat-num { font-size: 1.6rem; }
+
+  /* Page hero (inner pages) */
+  .page-hero { min-height: 220px; }
+  .page-hero__title { font-size: clamp(1.8rem, 6vw, 2.5rem); }
+
+  /* Section headings */
+  .section-heading { font-size: clamp(1.5rem, 5vw, 2rem) !important; }
+
+  /* Topbar: hide on mobile to save space */
+  .topbar { display: none; }
+
+  /* Police gallery: slimmer cards on mobile */
+  .police-gallery__img { width: 120px; height: 155px; }
+
+  /* Stats band */
+  .stats-band__grid { grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
+  .stats-band__num  { font-size: 2rem; }
+
+  /* Footer */
   .footer__grid { grid-template-columns: 1fr; gap: 2rem; }
-  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-  .gallery-grid--4 { grid-template-columns: repeat(2, 1fr); }
+  .footer__bottom { flex-direction: column; text-align: center; gap: .5rem; }
+
+  /* Gallery grids */
+  .gallery-grid, .gallery-grid--4 { grid-template-columns: repeat(2, 1fr); }
+
+  /* Person card */
   .person-card--featured { flex-direction: column; }
   .person-card--featured .person-card__img { width: 100%; max-width: 180px; height: auto; aspect-ratio: 3/4; }
+
+  /* Gold strip */
+  .gold-strip__inner { flex-direction: column; gap: .75rem; text-align: center; }
+
+  /* CTA button groups */
+  [style*="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap"] {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
 }
+
+/* ── Mobile ── */
 @media (max-width: 480px) {
-  .hero__stats { grid-template-columns: repeat(2, 1fr); gap: .75rem; }
+  html { font-size: 15px; }
+  .container { padding: 0 1rem; }
+
+  .hero { padding: 6rem 0 3rem; }
+  .hero__title { font-size: clamp(1.8rem, 9vw, 2.4rem) !important; }
+
+  /* 4-col → 1-col on very small screens */
+  [style*="grid-template-columns:repeat(4"],
+  [style*="grid-template-columns: repeat(4"] {
+    grid-template-columns: 1fr !important;
+  }
+
   .stats-band__grid { grid-template-columns: 1fr 1fr; }
-  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .hero__stats { grid-template-columns: repeat(2,1fr); gap: .5rem; }
+
+  /* Buttons: full width on small phones */
+  .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+
+  /* Section heading */
+  .section-heading { font-size: clamp(1.4rem, 7vw, 1.8rem) !important; }
+
+  /* Person cards: 1 column */
+  .governing-grid { grid-template-columns: 1fr !important; }
 }
