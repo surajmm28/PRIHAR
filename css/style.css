@@ -25,7 +25,7 @@
 
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+html { scroll-behavior: smooth; font-size: 18px; overflow-x: hidden; }
 body {
   font-family: var(--sans);
   color: var(--text);
@@ -41,7 +41,7 @@ h1,h2,h3,h4,h5 { font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; }
 p { line-height: 1.75; }
 
 /* ── Utilities ── */
-.container { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.container { max-width: 1440px; margin: 0 auto; padding: 0 2.5rem; }
 .section    { padding: 5rem 0; }
 .section--dark { background: var(--navy); color: var(--white); }
 .section--gray { background: var(--bg); }
